@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.example.jwang5.clock_android.Home">
+
+
+    <LinearLayout
+        android:id="@+id/TimeLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="20dp">
+
+
+        <TextView
+            android:id="@+id/TimeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_weight="1"
+            android:text="Time" />
+
+        <TextView
+            android:id="@+id/slectedTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
+            android:layout_toEndOf="@+id/textView2"
+            android:layout_toRightOf="@+id/textView2"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/chooseTimeBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
+            android:onClick="chooseTime"
+            android:text="Set Time"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/RepeatLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:orientation="vertical"
+        android:layout_below="@id/TimeLayout"
+        android:layout_marginBottom="20dp"
+        >
+
+        <LinearLayout
+            android:id="@+id/RepeatTextLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal"
+            android:layout_alignParentTop="true">
+
+            <TextView
+                android:id="@+id/RepeatText"
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:baselineAligned="false"
+
+                android:text="Repeat"
+                tools:layout_editor_absoluteX="24dp"
+                tools:layout_editor_absoluteY="93dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/RepeatWeekLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="15dp"
+            android:orientation="horizontal"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                android:id="@+id/Sun"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:onClick="onRepeatClick"
+                android:tag="0"
+                android:text="Sun" />
+
+            <TextView
+                android:id="@+id/Mon"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:onClick="onRepeatClick"
+                android:tag="1"
+                android:text="Mon" />
+
+            <TextView
+                android:id="@+id/Tue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:onClick="onRepeatClick"
+                android:tag="2"
+                android:text="Tue" />
+
+            <TextView
+                android:id="@+id/Wed"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:onClick="onRepeatClick"
+                android:tag="3"
+                android:text="Wed" />
+
+            <TextView
+                android:id="@+id/Thu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:onClick="onRepeatClick"
+                android:tag="4"
+                android:text="Thu" />
+
+            <TextView
+                android:id="@+id/Fri"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:onClick="onRepeatClick"
+                android:tag="5"
+                android:text="Fri" />
+
+            <TextView
+                android:id="@+id/Sat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:onClick="onRepeatClick"
+                android:tag="6"
+                android:text="Sat" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/VibrateLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:orientation="horizontal"
+        android:layout_below="@id/RepeatLayout"
+        android:layout_marginBottom="20dp"
+        >
+
+
+        <CheckBox
+        android:id="@+id/VibrateCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_weight="1"
+        android:text="Vibrate"
+        android:onClick="onVibrateClicked"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/RingstonLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:orientation="vertical"
+        android:layout_below="@id/VibrateLayout"
+        android:layout_marginBottom="20dp"
+        >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+            android:id="@+id/Ringtone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:text="Ringtone" />
+
+            <Button
+            android:id="@+id/openBrowseBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="openBrowser"
+            android:text="SELECT SINGLE FILE " />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/TestAlarmLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:orientation="horizontal"
+        android:layout_below="@id/RingstonLayout">
+
+
+        <Button
+            android:id="@+id/testBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="testAlarm"
+            android:text="Test Alarm" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ButtonsLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+
+
+        <Button
+        android:id="@+id/SaveButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:onClick="saveClock"
+        android:text="Save" />
+
+        <Button
+        android:id="@+id/CancelButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:onClick="cancelClock"
+        android:text="Cancel" />
+
+    </LinearLayout>
+
+</RelativeLayout>
+
+

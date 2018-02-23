@@ -1,0 +1,13 @@
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+        android:id="@+id/add"
+        android:icon="@drawable/add_icon"
+        app:showAsAction="ifRoom"
+        android:title="add"/>
+    <item
+        android:id="@+id/delete"
+        android:icon="@drawable/delete"
+        app:showAsAction="ifRoom"
+        android:title="delete"/>
+</menu>
