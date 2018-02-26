@@ -31,7 +31,6 @@ public class Clock_list_adapter extends ArrayAdapter<clock_bean> {
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		// Get the data item for this position
 		clock_bean clock = getItem(position);
-		Log.w("123", "getView: " + position + "  is active: " + clock.isActive() );
 		// Check if an existing view is being reused, otherwise inflate the view
 		if (convertView == null) {
 				convertView = LayoutInflater.from(getContext()).inflate(R.layout.clock_row, parent, false);

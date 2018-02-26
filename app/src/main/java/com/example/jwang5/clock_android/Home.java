@@ -19,8 +19,11 @@ import com.example.jwang5.bean.Clock_list_adapter;
 import com.example.jwang5.bean.MusicCtrl;
 import com.example.jwang5.bean.clock_bean;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class Home extends AppCompatActivity {
 
@@ -49,7 +52,6 @@ public class Home extends AppCompatActivity {
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-					Log.w("12323123", "a row is clicked");
 					Intent intent = new Intent(context, clockDetail.class);
 					Bundle b = new Bundle();
 					b.putInt("id", position + 1);
@@ -60,7 +62,7 @@ public class Home extends AppCompatActivity {
 			});
 		}
 
-//		this.alarmGoesoff();
+		this.alarmGoesoff();
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -100,7 +102,7 @@ public class Home extends AppCompatActivity {
 		AlarmManager manager = (AlarmManager) getSystemService(this.ALARM_SERVICE);
 
 
-		if(!this.clockListStr.isEmpty()){
+		if(this.clockList.size() > 0){
 			for(int i = 0; i < this.clockList.size(); i++){
 				if(this.clockList.get(i).isActive()){
 					clock_bean clock = this.clockList.get(i);
@@ -108,6 +110,13 @@ public class Home extends AppCompatActivity {
 					alarmIntent.putExtra("musicUri", clock.getMusciURL());
 					pendingIntent = PendingIntent.getBroadcast(this, clock.getId(), alarmIntent, 0);
 					Calendar calendar = Calendar.getInstance();
+
+
+//					String weekDay;
+//					SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.US);
+//					weekDay = dayFormat.format(calendar.getTime());
+//					Date currentTime = calendar.getTime();
+
 					calendar.setTimeInMillis(System.currentTimeMillis());
 					calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(clock.getTime().split(":")[0]));
 					calendar.set(Calendar.MINUTE, Integer.parseInt(clock.getTime().split(":")[1]));
