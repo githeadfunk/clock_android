@@ -21,6 +21,7 @@ import com.example.jwang5.bean.clock_bean;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -112,22 +113,37 @@ public class Home extends AppCompatActivity {
 					Calendar calendar = Calendar.getInstance();
 
 
-//					String weekDay;
-//					SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.US);
-//					weekDay = dayFormat.format(calendar.getTime());
-//					Date currentTime = calendar.getTime();
+					String weekDay;
+					String[] weekDays = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+					SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.US);
+					weekDay = dayFormat.format(calendar.getTime());
+					int todayIndex = Arrays.asList(weekDays).indexOf(weekDay);
+					Log.w("todayIndex", todayIndex + "" );
+					Log.w("weekDay", weekDay );
 
-					calendar.setTimeInMillis(System.currentTimeMillis());
-					calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(clock.getTime().split(":")[0]));
-					calendar.set(Calendar.MINUTE, Integer.parseInt(clock.getTime().split(":")[1]));
+					SimpleDateFormat sdf = new SimpleDateFormat("k:mm");
+					String currentTime = sdf.format(calendar.getTime());
+					Log.w("currentTime", currentTime );
+
+					for(int j = 0; j < 7; j++){
+						if(clock.getRepeat()[j] == true && j >= todayIndex){
+							if(Integer.parseInt(currentTime.split(":")[0]) <= Integer.parseInt(clock.getTime().split(":")[0])){
+								if(Integer.parseInt(currentTime.split(":")[1]) < Integer.parseInt(clock.getTime().split(":")[1])) {
+									calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+									calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(clock.getTime().split(":")[0]));
+									calendar.set(Calendar.MINUTE, Integer.parseInt(clock.getTime().split(":")[1]));
+								}
+							}
+						}
+					}
+
 
 					try {
 						manager.cancel(pendingIntent);
 					} catch (Exception e) {
 					}
 
-					manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-									1000 * 60 * 24, pendingIntent);
+					manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 				}
 			}
 		}
