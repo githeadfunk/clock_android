@@ -124,16 +124,59 @@ public class Home extends AppCompatActivity {
 					SimpleDateFormat sdf = new SimpleDateFormat("k:mm");
 					String currentTime = sdf.format(calendar.getTime());
 					Log.w("currentTime", currentTime );
+					Log.w("THe current clock", clock.toString()  );
+					for(int j = 0; j < todayIndex; j++){
+						if(clock.getRepeat()[j] == true){
 
-					for(int j = 0; j < 7; j++){
-						if(clock.getRepeat()[j] == true && j >= todayIndex){
+							while (calendar.get(Calendar.DAY_OF_WEEK) != (j+1)) {
+								calendar.add(Calendar.DATE, 1);
+							}
+
+							String alarm_date = getYearMonthDay(calendar);
+
+							calendar.set(Calendar.YEAR, Integer.parseInt(alarm_date.split(":")[0]));
+							calendar.set(Calendar.MONTH, Integer.parseInt(alarm_date.split(":")[1]) - 1);
+							calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(alarm_date.split(":")[2]));
+							calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(clock.getTime().split(":")[0]));
+							calendar.set(Calendar.MINUTE, Integer.parseInt(clock.getTime().split(":")[1]));
+							calendar.set(Calendar.SECOND, 0);
+							break;
+						}
+					}
+					for(int j = todayIndex; j < 7; j++){
+						if(clock.getRepeat()[j] == true && j == todayIndex){
 							if(Integer.parseInt(currentTime.split(":")[0]) <= Integer.parseInt(clock.getTime().split(":")[0])){
 								if(Integer.parseInt(currentTime.split(":")[1]) < Integer.parseInt(clock.getTime().split(":")[1])) {
-									calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+
+									calendar = Calendar.getInstance();
+									String alarm_date = getYearMonthDay(calendar);
+
+									calendar.set(Calendar.YEAR, Integer.parseInt(alarm_date.split(":")[0]));
+									calendar.set(Calendar.MONTH, Integer.parseInt(alarm_date.split(":")[1]) - 1);
+									calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(alarm_date.split(":")[2]));
 									calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(clock.getTime().split(":")[0]));
 									calendar.set(Calendar.MINUTE, Integer.parseInt(clock.getTime().split(":")[1]));
+									calendar.set(Calendar.SECOND, 0);
+									break;
 								}
 							}
+						}
+						else if(clock.getRepeat()[j] == true && j > todayIndex){
+
+							calendar = Calendar.getInstance();
+
+							while (calendar.get(Calendar.DAY_OF_WEEK) != (j+1)) {
+								calendar.add(Calendar.DATE, 1);
+							}
+							String alarm_date = getYearMonthDay(calendar);
+
+							calendar.set(Calendar.YEAR, Integer.parseInt(alarm_date.split(":")[0]));
+							calendar.set(Calendar.MONTH, Integer.parseInt(alarm_date.split(":")[1]) - 1);
+							calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(alarm_date.split(":")[2]));
+							calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(clock.getTime().split(":")[0]));
+							calendar.set(Calendar.MINUTE, Integer.parseInt(clock.getTime().split(":")[1]));
+							calendar.set(Calendar.SECOND, 0);
+							break;
 						}
 					}
 
@@ -141,9 +184,10 @@ public class Home extends AppCompatActivity {
 					try {
 						manager.cancel(pendingIntent);
 					} catch (Exception e) {
+						Log.w("asdf", "cancel errro" + e );
 					}
 
-					manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+					manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1000 * 60 * 10, pendingIntent);
 				}
 			}
 		}
@@ -154,6 +198,20 @@ public class Home extends AppCompatActivity {
 		super.onPause();
 		MusicCtrl mc = MusicCtrl.getInstance(this);
 		mc.stopMusic();
+	}
+
+	public String getYearMonthDay(Calendar calendar){
+
+		SimpleDateFormat yearFormat = new SimpleDateFormat("y");
+		String year = yearFormat.format(calendar.getTime());
+		SimpleDateFormat monthFormat = new SimpleDateFormat("M");
+		String month = monthFormat.format(calendar.getTime());
+		SimpleDateFormat dayFormat = new SimpleDateFormat("d");
+		String day = dayFormat.format(calendar.getTime());
+
+		String result = year + ":" + month + ":" + day;
+		Log.w("result", result );
+		return result;
 	}
 
 

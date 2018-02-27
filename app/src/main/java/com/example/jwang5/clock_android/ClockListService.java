@@ -64,9 +64,14 @@ public class ClockListService {
 	}
 
 	public void toggleActive(int pos, boolean isActive){
+
 		this.clockList = getClockList();
-		this.clockList.get(pos).setActive(isActive);
-		setClockList(this.clockList);
+		if(this.clockList.get(pos).isActive() != isActive){
+			Log.w("saf", "toggleActive: " + pos + " is active" + isActive );
+			this.clockList.get(pos).setActive(isActive);
+			setClockList(this.clockList);
+		}
+
 	}
 
 }
