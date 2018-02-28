@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.example.jwang5.bean.clock_bean;
@@ -28,7 +29,6 @@ public class clockDetail extends AppCompatActivity {
 
 	private MediaPlayer mediaPlayer;
 	private Vibrator vibrator;
-	private SharedPreferences myref;
 
 	private Boolean[] repeat = {false, false, false, false, false, false, false};
 	private Boolean vibrateOn = false;
@@ -36,6 +36,7 @@ public class clockDetail extends AppCompatActivity {
 	private String time;
 	private Boolean active = true;
 	private int id = 0;
+	private int volume;
 	private ArrayList<clock_bean> clockList;
 	private clock_bean currentClock;
 	private ClockListService cls;
@@ -49,28 +50,27 @@ public class clockDetail extends AppCompatActivity {
 
 		this.cls = ClockListService.getInstance(this);
 		this.clockList = cls.getClockList();
-//		Log.w("ASDf", "onCreate: "  + " " + this.clockList.get(0).isActive() + " " + this.clockList.get(1).isActive() + " " + this.clockList.get(2).isActive()  );
 
-		if(this.clockList != null && this.clockList.size() > 0){
-
+		if(this.id == 0){
+			this.currentClock = new clock_bean();
 		}
-		if(this.id != 0){
+		else{
 			for(int i = 0; i < this.clockList.size(); i++){
 				if(this.clockList.get(i).getId() == this.id) {
 					this.currentClock = clockList.get(i);
-					setViewValues();
 					break;
 				}
 			}
 		}
+		setViewValues(this.currentClock);
 	}
 
-	public void setViewValues(){
-		this.time = this.currentClock.getTime();
+	public void setViewValues(clock_bean clock){
+		this.time = clock.getTime();
 		TextView timeV = (TextView)findViewById(R.id.slectedTime);
-		timeV.setText(this.currentClock.getTime());
+		timeV.setText(clock.getTime());
 
-		this.repeat = this.currentClock.getRepeat();
+		this.repeat = clock.getRepeat();
 		String[] weekDay = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 		for(int i = 0; i < weekDay.length; i++){
 			TextView tv = (TextView) findViewById(getResources().getIdentifier(weekDay[i], "id", getPackageName()));
@@ -78,13 +78,32 @@ public class clockDetail extends AppCompatActivity {
 			else tv.setTextColor(Color.parseColor("#000000"));
 		}
 
-		this.vibrateOn = this.currentClock.isVibrate();
+		this.vibrateOn = clock.isVibrate();
 		CheckBox checkBox = (CheckBox) findViewById(R.id.VibrateCheckBox);
 		checkBox.setChecked(this.vibrateOn);
 
-		this.musicUri = this.currentClock.getMusciURL();
-		this.id = this.currentClock.getId();
-		this.active = this.currentClock.isActive();
+		this.musicUri = clock.getMusciURL();
+		this.id = clock.getId();
+		this.active = clock.isActive();
+		this.volume = clock.getVolume();
+
+		SeekBar volumeBar=(SeekBar) findViewById(R.id.volumeBar);
+		volumeBar.setMax(100);
+		volumeBar.setProgress(this.volume);
+
+		volumeBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+			int progressChanged = 0;
+
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
+				progressChanged = progress;
+			}
+
+			public void onStartTrackingTouch(SeekBar seekBar) {
+			}
+
+			public void onStopTrackingTouch(SeekBar seekBar) {
+			}
+		});
 
 	}
 
@@ -118,21 +137,24 @@ public class clockDetail extends AppCompatActivity {
 		TextView tv = (TextView) findViewById(R.id.slectedTime);
 		this.time = tv.getText().toString();
 
+		SeekBar volumeBar = (SeekBar) findViewById(R.id.volumeBar);
+		this.volume = volumeBar.getProgress();
+
 		boolean isValid = runValidation();
 		if(!isValid) return;
 
 		if(this.clockList == null){
 			this.clockList = new ArrayList<clock_bean>();
-			clock_bean c = new clock_bean(this.time, this.repeat, this.active,1, this.vibrateOn, this.musicUri);
-			this.clockList.add(c);
+			this.currentClock = new clock_bean(this.time, this.repeat, this.active,1, this.vibrateOn, this.musicUri, this.volume);
+			this.clockList.add(this.currentClock);
 		}
 		else if(this.id == 0){
 			int newId = this.clockList.size() + 1;
-			clock_bean c = new clock_bean(this.time, this.repeat, this.active, newId, this.vibrateOn, this.musicUri);
-			this.clockList.add(c);
+			this.currentClock = new clock_bean(this.time, this.repeat, this.active,newId, this.vibrateOn, this.musicUri, this.volume);
+			this.clockList.add(this.currentClock);
 		}
 		else{
-			this.currentClock = new clock_bean(this.time, this.repeat, this.active, this.id, this.vibrateOn, this.musicUri);
+			this.currentClock = new clock_bean(this.time, this.repeat, this.active, this.id, this.vibrateOn, this.musicUri, this.volume);
 			for(int i = 0; i < this.clockList.size(); i++){
 				if(this.clockList.get(i).getId() == this.id){
 					this.clockList.set(i, this.currentClock);
@@ -140,10 +162,10 @@ public class clockDetail extends AppCompatActivity {
 				}
 			}
 		}
-		Log.w("123213", "saveClock:" );
-		this.cls = ClockListService.getInstance(this);
-		this.cls.setClockList(this.clockList);
-		startActivity(new Intent(this, Home.class));
+		Log.w("Current clock is ", this.currentClock.toString());
+//		this.cls = ClockListService.getInstance(this);
+//		this.cls.setClockList(this.clockList);
+//		startActivity(new Intent(this, Home.class));
 	}
 
 	public boolean runValidation(){
@@ -163,6 +185,10 @@ public class clockDetail extends AppCompatActivity {
 		}
 		if(this.musicUri == null || this.musicUri.isEmpty()){
 			new myAlert("Please set ringtone", this).onCreateDialog();
+			return false;
+		}
+		if(this.volume == 0){
+			new myAlert("Please set volume", this).onCreateDialog();
 			return false;
 		}
 		return true;

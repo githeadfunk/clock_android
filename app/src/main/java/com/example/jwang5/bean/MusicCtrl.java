@@ -23,6 +23,11 @@ public class MusicCtrl {
 	}
 
 	public void playMusic(Context context,String musicUri) {
+
+//		float log1=(float)(Math.log(maxVolume-currVolume)/Math.log(maxVolume));
+//		mMediaPlayer.setVolume(1-log1);
+
+
 		mMediaPlayer = new MediaPlayer();
 		mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 		try{

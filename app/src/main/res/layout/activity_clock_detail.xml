@@ -225,12 +225,48 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/volumeBarLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:orientation="horizontal"
+        android:layout_below="@id/RingstonLayout"
+        android:layout_marginBottom="20dp">
+
+        <LinearLayout
+            android:id="@+id/volumeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:orientation="vertical"
+            android:layout_alignParentTop="true">
+
+            <TextView
+                android:id="@+id/volumeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Volume"
+                android:layout_marginBottom="10dp"/>
+
+            <SeekBar
+                android:id="@+id/volumeBar"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:max="100"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/TestAlarmLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:orientation="horizontal"
-        android:layout_below="@id/RingstonLayout">
+        android:layout_below="@id/volumeBarLayout"
+        android:layout_marginBottom="20dp">
 
 
         <Button
@@ -249,7 +285,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:orientation="horizontal"
-        android:layout_alignParentBottom="true">
+        android:layout_below="@id/TestAlarmLayout"
+        >
 
 
         <Button

@@ -16,14 +16,34 @@ public class clock_bean implements Serializable {
 	private int id;
 	private boolean vibrate;
 	private String musciURL;
+	private int volume;
 
-	public clock_bean(String time, Boolean[] repeat, boolean active, int id, boolean vibrate, String musciURL) {
+	public clock_bean() {
+		this.time = "";
+		this.repeat = new Boolean[] {false, false, false, false, false, false, false};
+		this.active = true;
+		this.id = 0;
+		this.vibrate = false;
+		this.musciURL = "";
+		this.volume = 100;
+	}
+
+	public clock_bean(String time, Boolean[] repeat, boolean active, int id, boolean vibrate, String musciURL, int volume) {
 		this.time = time;
 		this.repeat = repeat;
 		this.active = active;
 		this.id = id;
 		this.vibrate = vibrate;
 		this.musciURL = musciURL;
+		this.volume = volume;
+	}
+
+	public int getVolume() {
+		return volume;
+	}
+
+	public void setVolume(int volume) {
+		this.volume = volume;
 	}
 
 	public String getTime() {
@@ -82,7 +102,8 @@ public class clock_bean implements Serializable {
 						", active=" + active +
 						", id=" + id +
 						", vibrate=" + vibrate +
-						", musciURL=" + musciURL +
+						", musciURL='" + musciURL + '\'' +
+						", volume=" + volume +
 						'}';
 	}
 }

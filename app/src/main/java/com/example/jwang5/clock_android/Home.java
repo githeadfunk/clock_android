@@ -23,7 +23,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 public class Home extends AppCompatActivity {
@@ -31,7 +30,6 @@ public class Home extends AppCompatActivity {
 	private PendingIntent pendingIntent;
 	private ArrayList<clock_bean> clockList;
 	private ListView listView;
-	private String clockListStr;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -187,7 +185,7 @@ public class Home extends AppCompatActivity {
 						Log.w("asdf", "cancel errro" + e );
 					}
 
-					manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1000 * 60 * 10, pendingIntent);
+					manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 				}
 			}
 		}
