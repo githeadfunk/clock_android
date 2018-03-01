@@ -39,9 +39,6 @@ public class ClockListService {
 		SharedPreferences.Editor editor = this.myref.edit();
 		try{
 			String clockListStr = ObjectSerializer.serialize(this.clockList);
-//			if(clockListStr.isEmpty()){
-//				Log.w("clockListStr", "is empty");
-//			}else Log.w("clockListStr", "is not empty");
 			editor.putString("clockList", clockListStr);
 			editor.commit();
 		}catch(IOException e){

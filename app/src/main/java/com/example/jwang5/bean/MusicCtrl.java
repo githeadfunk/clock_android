@@ -22,14 +22,15 @@ public class MusicCtrl {
 		return sInstance;
 	}
 
-	public void playMusic(Context context,String musicUri) {
+	public void playMusic(Context context, String musicUri, int volume) {
 
-//		float log1=(float)(Math.log(maxVolume-currVolume)/Math.log(maxVolume));
-//		mMediaPlayer.setVolume(1-log1);
+
 
 
 		mMediaPlayer = new MediaPlayer();
 		mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+		float log1=(float)(Math.log(100-volume + 1)/Math.log(101));
+		mMediaPlayer.setVolume(1-log1, 1-log1);
 		try{
 			mMediaPlayer.setDataSource(context, Uri.parse(musicUri));
 			mMediaPlayer.prepare();

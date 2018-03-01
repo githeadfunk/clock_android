@@ -20,6 +20,7 @@ import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.example.jwang5.bean.MusicCtrl;
 import com.example.jwang5.bean.clock_bean;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -91,19 +92,19 @@ public class clockDetail extends AppCompatActivity {
 		volumeBar.setMax(100);
 		volumeBar.setProgress(this.volume);
 
-		volumeBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-			int progressChanged = 0;
-
-			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
-				progressChanged = progress;
-			}
-
-			public void onStartTrackingTouch(SeekBar seekBar) {
-			}
-
-			public void onStopTrackingTouch(SeekBar seekBar) {
-			}
-		});
+//		volumeBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//			int progressChanged = 0;
+//
+//			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
+//				progressChanged = progress;
+//			}
+//
+//			public void onStartTrackingTouch(SeekBar seekBar) {
+//			}
+//
+//			public void onStopTrackingTouch(SeekBar seekBar) {
+//			}
+//		});
 
 	}
 
@@ -163,9 +164,9 @@ public class clockDetail extends AppCompatActivity {
 			}
 		}
 		Log.w("Current clock is ", this.currentClock.toString());
-//		this.cls = ClockListService.getInstance(this);
-//		this.cls.setClockList(this.clockList);
-//		startActivity(new Intent(this, Home.class));
+		this.cls = ClockListService.getInstance(this);
+		this.cls.setClockList(this.clockList);
+		startActivity(new Intent(this, Home.class));
 	}
 
 	public boolean runValidation(){
@@ -227,6 +228,12 @@ public class clockDetail extends AppCompatActivity {
 	}
 
 	public void testAlarm(View v){
+
+//		MusicCtrl mc = MusicCtrl.getInstance(this);
+//		mc.playMusic(this, this.musicUri, this.volume);
+
+
+
 		if(this.mediaPlayer != null){
 			this.mediaPlayer.release();
 			this.mediaPlayer = null;

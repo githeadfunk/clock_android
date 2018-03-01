@@ -61,7 +61,7 @@ public class Home extends AppCompatActivity {
 			});
 		}
 
-		this.alarmGoesoff();
+//		this.alarmGoesoff();
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -107,6 +107,7 @@ public class Home extends AppCompatActivity {
 					clock_bean clock = this.clockList.get(i);
 					Intent alarmIntent = new Intent(this, AlarmReceiver.class);
 					alarmIntent.putExtra("musicUri", clock.getMusciURL());
+					alarmIntent.putExtra("volume", clock.getVolume());
 					pendingIntent = PendingIntent.getBroadcast(this, clock.getId(), alarmIntent, 0);
 					Calendar calendar = Calendar.getInstance();
 

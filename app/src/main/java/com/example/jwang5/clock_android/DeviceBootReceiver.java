@@ -19,26 +19,26 @@ public class DeviceBootReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		if(intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
-			Log.w("123213", "reboot" );
-			myAlert alert = new myAlert("reboot", context);
-			alert.onCreateDialog();
-
-			ClockListService cls = ClockListService.getInstance(context);
-			this.clockList = cls.getClockList();
-
-			Intent alarmIntent = new Intent(context, AlarmReceiver.class);
-			alarmIntent.putExtra("musicUri", this.clockList.get(0).getMusciURL());
-			pendingIntent = PendingIntent.getBroadcast(context, this.clockList.get(0).getId(), alarmIntent, 0);
-
-			AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
-			Calendar calendar = Calendar.getInstance();
-			calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(this.clockList.get(0).getTime().split(":")[0]));
-			calendar.set(Calendar.MINUTE, Integer.parseInt(this.clockList.get(0).getTime().split(":")[1]));
-			calendar.set(Calendar.SECOND, 0);
-			manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-
-		}
+//		if(intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
+//			Log.w("123213", "reboot" );
+//			myAlert alert = new myAlert("reboot", context);
+//			alert.onCreateDialog();
+//
+//			ClockListService cls = ClockListService.getInstance(context);
+//			this.clockList = cls.getClockList();
+//
+//			Intent alarmIntent = new Intent(context, AlarmReceiver.class);
+//			alarmIntent.putExtra("musicUri", this.clockList.get(0).getMusciURL());
+//			pendingIntent = PendingIntent.getBroadcast(context, this.clockList.get(0).getId(), alarmIntent, 0);
+//
+//			AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+//
+//			Calendar calendar = Calendar.getInstance();
+//			calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(this.clockList.get(0).getTime().split(":")[0]));
+//			calendar.set(Calendar.MINUTE, Integer.parseInt(this.clockList.get(0).getTime().split(":")[1]));
+//			calendar.set(Calendar.SECOND, 0);
+//			manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+//
+//		}
 	}
 }

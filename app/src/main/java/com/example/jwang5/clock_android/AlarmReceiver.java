@@ -20,9 +20,10 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 		Bundle extras = intent.getExtras();
 		String musicUri = extras.getString("musicUri");
+		int volume = extras.getInt("volume");
 
 		MusicCtrl mc = MusicCtrl.getInstance(context);
-		mc.playMusic(context, musicUri);
+		mc.playMusic(context, musicUri, volume);
 
 	}
 
