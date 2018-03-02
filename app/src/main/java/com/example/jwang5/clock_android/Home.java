@@ -61,7 +61,7 @@ public class Home extends AppCompatActivity {
 			});
 		}
 
-//		this.alarmGoesoff();
+		this.alarmGoesoff();
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
