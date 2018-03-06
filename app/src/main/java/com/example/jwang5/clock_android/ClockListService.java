@@ -1,10 +1,12 @@
 package com.example.jwang5.clock_android;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.example.jwang5.bean.MusicCtrl;
 import com.example.jwang5.bean.clock_bean;
 
 import java.io.IOException;
@@ -67,6 +69,23 @@ public class ClockListService {
 			Log.w("saf", "toggleActive: " + pos + " is active" + isActive );
 			this.clockList.get(pos).setActive(isActive);
 			setClockList(this.clockList);
+
+			Intent alarmIntent = new Intent(this.context, AlarmReceiver.class);
+			alarmIntent.putExtra("musicUri", this.clockList.get(pos).getMusciURL());
+			alarmIntent.putExtra("volume", this.clockList.get(pos).getVolume());
+			PendingIntent pendingIntent = PendingIntent.getBroadcast(this.context, this.clockList.get(pos).getId(), alarmIntent, 0);
+			AlarmManager manager = (AlarmManager) this.context.getSystemService(this.context.ALARM_SERVICE);
+
+			try {
+				manager.cancel(pendingIntent);
+			} catch (Exception e) {
+				Log.w("asdf", "cancel errro" + e );
+			}
+
+			if(isActive){
+//				manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+			}
+
 		}
 
 	}
