@@ -97,97 +97,13 @@ public class Home extends AppCompatActivity {
 	}
 
 	public void alarmGoesoff() {
-		Log.w("123", "setting alarm");
-		AlarmManager manager = (AlarmManager) getSystemService(this.ALARM_SERVICE);
-
+    AlarmGoOffService alarmService = new AlarmGoOffService(this);
 
 		if(this.clockList.size() > 0){
 			for(int i = 0; i < this.clockList.size(); i++){
-				if(this.clockList.get(i).isActive()){
-					clock_bean clock = this.clockList.get(i);
-					Intent alarmIntent = new Intent(this, AlarmReceiver.class);
-					alarmIntent.putExtra("musicUri", clock.getMusciURL());
-					alarmIntent.putExtra("volume", clock.getVolume());
-					pendingIntent = PendingIntent.getBroadcast(this, clock.getId(), alarmIntent, 0);
-					Calendar calendar = Calendar.getInstance();
-
-
-					String weekDay;
-					String[] weekDays = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-					SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.US);
-					weekDay = dayFormat.format(calendar.getTime());
-					int todayIndex = Arrays.asList(weekDays).indexOf(weekDay);
-					Log.w("todayIndex", todayIndex + "" );
-					Log.w("weekDay", weekDay );
-
-					SimpleDateFormat sdf = new SimpleDateFormat("k:mm");
-					String currentTime = sdf.format(calendar.getTime());
-					Log.w("currentTime", currentTime );
-					Log.w("THe current clock", clock.toString()  );
-					for(int j = 0; j < todayIndex; j++){
-						if(clock.getRepeat()[j] == true){
-
-							while (calendar.get(Calendar.DAY_OF_WEEK) != (j+1)) {
-								calendar.add(Calendar.DATE, 1);
-							}
-
-							String alarm_date = getYearMonthDay(calendar);
-
-							calendar.set(Calendar.YEAR, Integer.parseInt(alarm_date.split(":")[0]));
-							calendar.set(Calendar.MONTH, Integer.parseInt(alarm_date.split(":")[1]) - 1);
-							calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(alarm_date.split(":")[2]));
-							calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(clock.getTime().split(":")[0]));
-							calendar.set(Calendar.MINUTE, Integer.parseInt(clock.getTime().split(":")[1]));
-							calendar.set(Calendar.SECOND, 0);
-							break;
-						}
-					}
-					for(int j = todayIndex; j < 7; j++){
-						if(clock.getRepeat()[j] == true && j == todayIndex){
-							if(Integer.parseInt(currentTime.split(":")[0]) <= Integer.parseInt(clock.getTime().split(":")[0])){
-								if(Integer.parseInt(currentTime.split(":")[1]) < Integer.parseInt(clock.getTime().split(":")[1])) {
-
-									calendar = Calendar.getInstance();
-									String alarm_date = getYearMonthDay(calendar);
-
-									calendar.set(Calendar.YEAR, Integer.parseInt(alarm_date.split(":")[0]));
-									calendar.set(Calendar.MONTH, Integer.parseInt(alarm_date.split(":")[1]) - 1);
-									calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(alarm_date.split(":")[2]));
-									calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(clock.getTime().split(":")[0]));
-									calendar.set(Calendar.MINUTE, Integer.parseInt(clock.getTime().split(":")[1]));
-									calendar.set(Calendar.SECOND, 0);
-									break;
-								}
-							}
-						}
-						else if(clock.getRepeat()[j] == true && j > todayIndex){
-
-							calendar = Calendar.getInstance();
-
-							while (calendar.get(Calendar.DAY_OF_WEEK) != (j+1)) {
-								calendar.add(Calendar.DATE, 1);
-							}
-							String alarm_date = getYearMonthDay(calendar);
-
-							calendar.set(Calendar.YEAR, Integer.parseInt(alarm_date.split(":")[0]));
-							calendar.set(Calendar.MONTH, Integer.parseInt(alarm_date.split(":")[1]) - 1);
-							calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(alarm_date.split(":")[2]));
-							calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(clock.getTime().split(":")[0]));
-							calendar.set(Calendar.MINUTE, Integer.parseInt(clock.getTime().split(":")[1]));
-							calendar.set(Calendar.SECOND, 0);
-							break;
-						}
-					}
-
-
-					try {
-						manager.cancel(pendingIntent);
-					} catch (Exception e) {
-						Log.w("asdf", "cancel errro" + e );
-					}
-
-					manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-				}
+        clock_bean clock = this.clockList.get(i);
+				if(clock.isActive()) alarmService.goOff(clock);
+				else alarmService.cancelAlarm(clock);
 			}
 		}
 	}
@@ -198,20 +114,5 @@ public class Home extends AppCompatActivity {
 		MusicCtrl mc = MusicCtrl.getInstance(this);
 		mc.stopMusic();
 	}
-
-	public String getYearMonthDay(Calendar calendar){
-
-		SimpleDateFormat yearFormat = new SimpleDateFormat("y");
-		String year = yearFormat.format(calendar.getTime());
-		SimpleDateFormat monthFormat = new SimpleDateFormat("M");
-		String month = monthFormat.format(calendar.getTime());
-		SimpleDateFormat dayFormat = new SimpleDateFormat("d");
-		String day = dayFormat.format(calendar.getTime());
-
-		String result = year + ":" + month + ":" + day;
-		Log.w("result", result );
-		return result;
-	}
-
 
 }

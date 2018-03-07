@@ -66,26 +66,13 @@ public class ClockListService {
 
 		this.clockList = getClockList();
 		if(this.clockList.get(pos).isActive() != isActive){
-			Log.w("saf", "toggleActive: " + pos + " is active" + isActive );
+
 			this.clockList.get(pos).setActive(isActive);
 			setClockList(this.clockList);
 
-			Intent alarmIntent = new Intent(this.context, AlarmReceiver.class);
-			alarmIntent.putExtra("musicUri", this.clockList.get(pos).getMusciURL());
-			alarmIntent.putExtra("volume", this.clockList.get(pos).getVolume());
-			PendingIntent pendingIntent = PendingIntent.getBroadcast(this.context, this.clockList.get(pos).getId(), alarmIntent, 0);
-			AlarmManager manager = (AlarmManager) this.context.getSystemService(this.context.ALARM_SERVICE);
-
-			try {
-				manager.cancel(pendingIntent);
-			} catch (Exception e) {
-				Log.w("asdf", "cancel errro" + e );
-			}
-
-			if(isActive){
-//				manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-			}
-
+			AlarmGoOffService alarmService = new AlarmGoOffService(this.context);
+      if(isActive) alarmService.goOff(this.clockList.get(pos));
+      else alarmService.cancelAlarm(this.clockList.get(pos));
 		}
 
 	}
