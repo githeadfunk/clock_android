@@ -5,8 +5,6 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -20,11 +18,9 @@ import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.example.jwang5.bean.MusicCtrl;
 import com.example.jwang5.bean.clock_bean;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class clockDetail extends AppCompatActivity {
 

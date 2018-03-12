@@ -1,6 +1,5 @@
 package com.example.jwang5.clock_android;
 
-import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -19,11 +18,7 @@ import com.example.jwang5.bean.Clock_list_adapter;
 import com.example.jwang5.bean.MusicCtrl;
 import com.example.jwang5.bean.clock_bean;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Locale;
 
 public class Home extends AppCompatActivity {
 
@@ -113,6 +108,7 @@ public class Home extends AppCompatActivity {
 		super.onPause();
 		MusicCtrl mc = MusicCtrl.getInstance(this);
 		mc.stopMusic();
+		WakeLocker.release();
 	}
 
 }

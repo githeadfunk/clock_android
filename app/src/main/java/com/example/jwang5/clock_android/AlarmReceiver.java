@@ -15,6 +15,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 
+		WakeLocker.acquire(context);
 		Date currentTime = Calendar.getInstance().getTime();
 		Log.w("11456", "alarm goes off" + currentTime);
 
@@ -24,6 +25,8 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 		MusicCtrl mc = MusicCtrl.getInstance(context);
 		mc.playMusic(context, musicUri, volume);
+
+		context.startActivity(new Intent(context, Home.class));
 
 	}
 
