@@ -26,10 +26,7 @@ public class MusicCtrl {
 	}
 
 	public void playMusic(Context context, String musicUri, int volume) {
-
-
-
-
+		stopMusic();
 		mMediaPlayer = new MediaPlayer();
 		mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 		float log1=(float)(Math.log(100-volume + 1)/Math.log(101));
@@ -38,7 +35,6 @@ public class MusicCtrl {
 			mMediaPlayer.setDataSource(context, Uri.parse(musicUri));
 			mMediaPlayer.prepare();
 			mMediaPlayer.start();
-			Log.w("123", "playing Music");
 		}catch(IOException e ){
 			myAlert alert = new myAlert(e.toString(), context);
 			alert.onCreateDialog();
@@ -46,7 +42,6 @@ public class MusicCtrl {
 	}
 
 	public void stopMusic() {
-		Log.w("123", "stopMusic: ");
 		if(mMediaPlayer != null) {
 			mMediaPlayer.release();
 			mMediaPlayer = null;

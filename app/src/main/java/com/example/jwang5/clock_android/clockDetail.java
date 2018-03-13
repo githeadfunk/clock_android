@@ -18,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.example.jwang5.bean.MusicCtrl;
 import com.example.jwang5.bean.clock_bean;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -192,7 +193,6 @@ public class clockDetail extends AppCompatActivity {
 	}
 
 	public void cancelClock(View v){
-//		Log.w("123123", "cancelClock: " + this.clockList.get(0).isActive() + " " + this.clockList.get(1).isActive() + " " + this.clockList.get(2).isActive() );
 		startActivity(new Intent(this, Home.class));
 	}
 
@@ -224,39 +224,23 @@ public class clockDetail extends AppCompatActivity {
 	}
 
 	public void testAlarm(View v){
-
-//		MusicCtrl mc = MusicCtrl.getInstance(this);
-//		mc.playMusic(this, this.musicUri, this.volume);
-
-
-
-		if(this.mediaPlayer != null){
-			this.mediaPlayer.release();
-			this.mediaPlayer = null;
+		if(this.musicUri == null || this.musicUri.isEmpty()){
+			new myAlert("Please set ringtone", this).onCreateDialog();
+			return;
 		}
-		this.mediaPlayer = new MediaPlayer();
-		mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-		try{
-			if(this.musicUri != null){
-				Log.w("This is testing music", this.musicUri);
-				mediaPlayer.setDataSource(getApplicationContext(), Uri.parse(this.musicUri));
-				mediaPlayer.prepare();
-				mediaPlayer.start();
-			}
-		}catch(IOException e){
-			Context context = this;
-			myAlert alert = new myAlert(e.toString(), context);
-			alert.onCreateDialog();
+		if(this.volume == 0){
+			new myAlert("Please set volume", this).onCreateDialog();
+			return;
 		}
+		MusicCtrl mc = MusicCtrl.getInstance(this);
+		mc.playMusic(this, this.musicUri, this.volume);
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		if(this.mediaPlayer != null){
-			this.mediaPlayer.release();
-			this.mediaPlayer = null;
-		}
+		MusicCtrl mc = MusicCtrl.getInstance(this);
+		mc.stopMusic();
 	}
 
 	@Override
