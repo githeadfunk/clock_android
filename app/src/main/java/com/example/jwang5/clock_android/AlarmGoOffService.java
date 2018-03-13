@@ -50,7 +50,7 @@ public class AlarmGoOffService {
     Boolean laterToday = false;
 
     if(clock.getRepeat()[todayIndex] == true){
-      laterToday = !(Integer.parseInt(currentTime.split(":")[0]) < Integer.parseInt(clock.getTime().split(":")[0]) ||
+      laterToday = !(Integer.parseInt(currentTime.split(":")[0]) > Integer.parseInt(clock.getTime().split(":")[0]) ||
         (Integer.parseInt(currentTime.split(":")[0]) == Integer.parseInt(clock.getTime().split(":")[0]) &&
           Integer.parseInt(currentTime.split(":")[1]) >= Integer.parseInt(clock.getTime().split(":")[1])
         ));
@@ -97,7 +97,8 @@ public class AlarmGoOffService {
       Log.w("asdf", "cancel errro" + e );
     }
 
-    manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+		Log.w("123", "setting alarm at " +  calendar.getTime());
+		manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
   }
 
   public void cancelAlarm(clock_bean clock){

@@ -4,6 +4,9 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.util.Log;
+
+import com.example.jwang5.clock_android.myAlert;
 
 import java.io.IOException;
 
@@ -35,11 +38,15 @@ public class MusicCtrl {
 			mMediaPlayer.setDataSource(context, Uri.parse(musicUri));
 			mMediaPlayer.prepare();
 			mMediaPlayer.start();
+			Log.w("123", "playing Music");
 		}catch(IOException e ){
+			myAlert alert = new myAlert(e.toString(), context);
+			alert.onCreateDialog();
 		}
 	}
 
 	public void stopMusic() {
+		Log.w("123", "stopMusic: ");
 		if(mMediaPlayer != null) {
 			mMediaPlayer.release();
 			mMediaPlayer = null;

@@ -11,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -31,6 +33,11 @@ public class Home extends AppCompatActivity {
 		Log.w("123", "home onCreate: ");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
+
+		final Window win= getWindow();
+		win.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+		win.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+
 		this.listView = findViewById(R.id.mainListView);
 
 		ClockListService cls = ClockListService.getInstance(this);
@@ -55,8 +62,23 @@ public class Home extends AppCompatActivity {
 				}
 			});
 		}
+		Boolean fired = false;
+		Bundle b = getIntent().getExtras();
+		if(b != null){
+			fired = b.getBoolean("fire");
+			Log.w("fire", "fired" + fired );
+		}
+
+		if(fired == true){
+//			myAlert alert = new myAlert("going off", this);
+//			alert.onCreateDialog();
+			MusicCtrl mc = MusicCtrl.getInstance(this);
+			mc.playMusic(this, b.getString("musicUri"), b.getInt("volume"));
+		}
 
 		this.alarmGoesoff();
+
+
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -108,7 +130,6 @@ public class Home extends AppCompatActivity {
 		super.onPause();
 		MusicCtrl mc = MusicCtrl.getInstance(this);
 		mc.stopMusic();
-		WakeLocker.release();
 	}
 
 }
