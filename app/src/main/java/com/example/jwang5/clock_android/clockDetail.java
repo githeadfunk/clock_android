@@ -224,6 +224,8 @@ public class clockDetail extends AppCompatActivity {
 	}
 
 	public void testAlarm(View v){
+    SeekBar volumeBar=(SeekBar) findViewById(R.id.volumeBar);
+    this.volume = volumeBar.getProgress();
 		if(this.musicUri == null || this.musicUri.isEmpty()){
 			new myAlert("Please set ringtone", this).onCreateDialog();
 			return;
@@ -246,9 +248,7 @@ public class clockDetail extends AppCompatActivity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		if(this.mediaPlayer != null){
-			this.mediaPlayer.release();
-			this.mediaPlayer = null;
-		}
+    MusicCtrl mc = MusicCtrl.getInstance(this);
+    mc.stopMusic();
 	}
 }

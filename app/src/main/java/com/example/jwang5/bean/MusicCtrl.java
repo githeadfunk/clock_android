@@ -14,6 +14,9 @@ public class MusicCtrl {
 	private static MusicCtrl sInstance;
 	private Context mContext;
 	private MediaPlayer mMediaPlayer;
+	private int originalVolume = -1;
+	private AudioManager audioManager;
+	private Context context;
 	public MusicCtrl(Context context) {
 		mContext = context;
 	}
@@ -26,12 +29,19 @@ public class MusicCtrl {
 	}
 
 	public void playMusic(Context context, String musicUri, int volume) {
+	  this.context = context;
 		stopMusic();
 		mMediaPlayer = new MediaPlayer();
 		mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-		float log1=(float)(Math.log(100-volume + 1)/Math.log(101));
-		mMediaPlayer.setVolume(1-log1, 1-log1);
-		try{
+    mMediaPlayer.setLooping(true);
+
+
+    audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+    int vol = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) * volume / 100;
+    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, vol,0);
+    this.originalVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+
+    try{
 			mMediaPlayer.setDataSource(context, Uri.parse(musicUri));
 			mMediaPlayer.prepare();
 			mMediaPlayer.start();
@@ -46,5 +56,9 @@ public class MusicCtrl {
 			mMediaPlayer.release();
 			mMediaPlayer = null;
 		}
+		if(audioManager != null && this.originalVolume != -1){
+      audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, this.originalVolume, 0);
+      audioManager = null;
+    }
 	}
 }
