@@ -36,6 +36,11 @@ public class AlarmGoOffService {
     alarmIntent = new Intent(this.context, AlarmReceiver.class);
     alarmIntent.putExtra("musicUri", clock.getMusciURL());
     alarmIntent.putExtra("volume", clock.getVolume());
+
+		Log.w("!@3", "setting alarm " + "vloume: " + clock.getVolume() + ", music: " + clock.getMusciURL() );
+		myAlert alert = new myAlert("setting alarm " + "vloume: " + clock.getVolume() + ", alarm id: " + clock.getId(), context);
+		alert.onCreateDialog();
+
     pendingIntent = PendingIntent.getBroadcast(this.context, clock.getId(), alarmIntent, 0);
     calendar = Calendar.getInstance();
 
@@ -91,11 +96,11 @@ public class AlarmGoOffService {
       if(laterToday) calendar = setCalendar(0, clock);
     }
 
-    try {
-      manager.cancel(pendingIntent);
-    } catch (Exception e) {
-      Log.w("asdf", "cancel errro" + e );
-    }
+//    try {
+//      manager.cancel(pendingIntent);
+//    } catch (Exception e) {
+//      Log.w("asdf", "cancel errro" + e );
+//    }
 
 		Log.w("123", "setting alarm at " +  calendar.getTime());
 		manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
@@ -107,13 +112,19 @@ public class AlarmGoOffService {
     Intent alarmIntent;
     AlarmManager manager = (AlarmManager) this.context.getSystemService(this.context.ALARM_SERVICE);
 
-    alarmIntent = new Intent(this.context, AlarmReceiver.class);
-    pendingIntent = PendingIntent.getBroadcast(this.context, clock.getId(), alarmIntent, 0);
+		alarmIntent = new Intent(this.context, AlarmReceiver.class);
+		alarmIntent.putExtra("musicUri", clock.getMusciURL());
+		alarmIntent.putExtra("volume", clock.getVolume());
+
+		Log.w("123", "cancelAlarm: id" + clock.getId()  );
+
+		pendingIntent = PendingIntent.getBroadcast(this.context, clock.getId(), alarmIntent, 0);
 
     try {
       manager.cancel(pendingIntent);
     } catch (Exception e) {
-      Log.w("asdf", "cancel errro" + e );
+			myAlert alert = new myAlert(e.toString(), context);
+			alert.onCreateDialog();
     }
   }
 

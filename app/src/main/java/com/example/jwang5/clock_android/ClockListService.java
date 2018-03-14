@@ -36,7 +36,6 @@ public class ClockListService {
 	}
 
 	public void setClockList(ArrayList<clock_bean> cl){
-		Log.w("sdaf", "setClockList: ");
 		this.clockList = cl;
 		SharedPreferences.Editor editor = this.myref.edit();
 		try{
@@ -44,7 +43,6 @@ public class ClockListService {
 			editor.putString("clockList", clockListStr);
 			editor.commit();
 		}catch(IOException e){
-			Log.w("error", "commit error");
 		}
 	}
 
@@ -74,6 +72,20 @@ public class ClockListService {
       if(isActive) alarmService.goOff(this.clockList.get(pos));
       else alarmService.cancelAlarm(this.clockList.get(pos));
 		}
+	}
+
+	public void deleteAll(){
+		//cancel all alarms
+		AlarmGoOffService alarmService = new AlarmGoOffService(this.context);
+		this.clockList = getClockList();
+		for(int i = 0; i < this.clockList.size(); i++){
+			alarmService.cancelAlarm(this.clockList.get(i));
+		}
+		//delete all alarms
+		myref = this.context.getSharedPreferences("myAppName", Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = myref.edit();
+		editor.putString("clockList", "");
+		editor.commit();
 
 	}
 

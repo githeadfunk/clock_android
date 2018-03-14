@@ -40,19 +40,24 @@ public class MusicCtrl {
     int vol = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) * volume / 100;
     audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, vol,0);
     this.originalVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+		myAlert alert = new myAlert("originalVolume: " + this.originalVolume + ", vloume: " + volume + ", Vol: " + vol
+						+ ", music: " + musicUri, context);
+		alert.onCreateDialog();
+		try{
 
-    try{
 			mMediaPlayer.setDataSource(context, Uri.parse(musicUri));
 			mMediaPlayer.prepare();
 			mMediaPlayer.start();
+			Log.w("123", "playing Music" + "originalVolume: " + this.originalVolume + ", vloume: " + volume + ", Vol: " + vol
+							+ ", music: " + musicUri);
 		}catch(IOException e ){
-			myAlert alert = new myAlert(e.toString(), context);
-			alert.onCreateDialog();
+
 		}
 	}
 
 	public void stopMusic() {
 		if(mMediaPlayer != null) {
+			mMediaPlayer.reset();
 			mMediaPlayer.release();
 			mMediaPlayer = null;
 		}

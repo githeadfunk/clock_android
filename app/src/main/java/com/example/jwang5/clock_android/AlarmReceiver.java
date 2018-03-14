@@ -26,6 +26,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 		in.putExtra("fire", true);
 		in.putExtra("musicUri", musicUri);
 		in.putExtra("volume", volume);
+		Log.w("123", "onReceive: volume" +  volume);
 		context.startActivity(in);
 
 	}

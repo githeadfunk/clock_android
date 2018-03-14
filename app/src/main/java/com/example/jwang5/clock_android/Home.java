@@ -24,9 +24,9 @@ import java.util.ArrayList;
 
 public class Home extends AppCompatActivity {
 
-	private PendingIntent pendingIntent;
 	private ArrayList<clock_bean> clockList;
 	private ListView listView;
+	private ClockListService cls = ClockListService.getInstance(this);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +40,7 @@ public class Home extends AppCompatActivity {
 
 		this.listView = findViewById(R.id.mainListView);
 
-		ClockListService cls = ClockListService.getInstance(this);
-		this.clockList = cls.getClockList();
+		this.clockList = this.cls.getClockList();
 		if(this.clockList != null && this.clockList.size() > 0){
 
 			//setting list view
@@ -106,15 +105,12 @@ public class Home extends AppCompatActivity {
 	}
 
 	public void deleteAll(){
-		SharedPreferences myref = getSharedPreferences("myAppName", Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = myref.edit();
-		editor.putString("clockList", "");
-		editor.commit();
+		this.cls.deleteAll();
 		this.listView.setAdapter(null);
 	}
 
 	public void alarmGoesoff() {
-    AlarmGoOffService alarmService = new AlarmGoOffService(this);
+		AlarmGoOffService alarmService = new AlarmGoOffService(this);
 
 		if(this.clockList.size() > 0){
 			for(int i = 0; i < this.clockList.size(); i++){
