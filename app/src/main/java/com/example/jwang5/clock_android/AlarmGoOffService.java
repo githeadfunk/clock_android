@@ -98,18 +98,6 @@ public class AlarmGoOffService {
     alarmIntent.putExtra("musicUri", clock.getMusciURL());
     alarmIntent.putExtra("volume", clock.getVolume());
 
-    boolean alarmUp = (PendingIntent.getBroadcast(this.context, clock.getId(),
-      alarmIntent,PendingIntent.FLAG_NO_CREATE) != null);
-
-    if (alarmUp)
-    {
-      Log.d("myTag", "Alarm is already active");
-    }
-
-    Log.w("!@3", "setting alarm " + "vloume: " + clock.getVolume() + ", music: " + clock.getMusciURL() );
-    myAlert alert = new myAlert("setting alarm " + "vloume: " + clock.getVolume() + ", alarm id: " + clock.getId(), context);
-    alert.onCreateDialog();
-
     pendingIntent = PendingIntent.getBroadcast(this.context, clock.getId(), alarmIntent, 0);
 
 		Log.w("123", "setting alarm at " +  calendar.getTime());

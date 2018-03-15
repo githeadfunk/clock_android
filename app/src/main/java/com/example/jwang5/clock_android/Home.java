@@ -69,8 +69,6 @@ public class Home extends AppCompatActivity {
 		}
 
 		if(fired == true){
-//			myAlert alert = new myAlert("going off", this);
-//			alert.onCreateDialog();
 			MusicCtrl mc = MusicCtrl.getInstance(this);
 			mc.playMusic(this, b.getString("musicUri"), b.getInt("volume"));
 		}

@@ -11,12 +11,14 @@ import com.example.jwang5.clock_android.myAlert;
 import java.io.IOException;
 
 public class MusicCtrl {
+
 	private static MusicCtrl sInstance;
 	private Context mContext;
 	private MediaPlayer mMediaPlayer;
 	private int originalVolume = -1;
 	private AudioManager audioManager;
 	private Context context;
+
 	public MusicCtrl(Context context) {
 		mContext = context;
 	}
@@ -37,12 +39,9 @@ public class MusicCtrl {
 
 
     audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+    this.originalVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
     int vol = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) * volume / 100;
     audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, vol,0);
-    this.originalVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-		myAlert alert = new myAlert("originalVolume: " + this.originalVolume + ", vloume: " + volume + ", Vol: " + vol
-						+ ", music: " + musicUri, context);
-		alert.onCreateDialog();
 		try{
 
 			mMediaPlayer.setDataSource(context, Uri.parse(musicUri));
