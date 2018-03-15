@@ -21,6 +21,8 @@ import android.widget.TextView;
 import com.example.jwang5.bean.MusicCtrl;
 import com.example.jwang5.bean.clock_bean;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 
 public class clockDetail extends AppCompatActivity {
@@ -60,6 +62,10 @@ public class clockDetail extends AppCompatActivity {
 				}
 			}
 		}
+
+
+//    myAlert alert = new myAlert("musicurl: " + url , this);
+//    alert.onCreateDialog();
 		setViewValues(this.currentClock);
 	}
 
@@ -81,6 +87,16 @@ public class clockDetail extends AppCompatActivity {
 		checkBox.setChecked(this.vibrateOn);
 
 		this.musicUri = clock.getMusciURL();
+    TextView fileV = (TextView)findViewById(R.id.fileName);
+    String url = "";
+    try{
+      url = URLDecoder.decode(this.currentClock.getMusciURL(), "UTF-8");
+    }catch (UnsupportedEncodingException e){
+
+    }
+    String[] parts = url.split("/");
+    fileV.setText(parts[parts.length - 1]);
+
 		this.id = clock.getId();
 		this.active = clock.isActive();
 		this.volume = clock.getVolume();
