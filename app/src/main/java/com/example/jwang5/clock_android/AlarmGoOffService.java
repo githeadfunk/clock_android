@@ -33,15 +33,7 @@ public class AlarmGoOffService {
     Calendar calendar;
     AlarmManager manager = (AlarmManager) this.context.getSystemService(this.context.ALARM_SERVICE);
 
-    alarmIntent = new Intent(this.context, AlarmReceiver.class);
-    alarmIntent.putExtra("musicUri", clock.getMusciURL());
-    alarmIntent.putExtra("volume", clock.getVolume());
 
-		Log.w("!@3", "setting alarm " + "vloume: " + clock.getVolume() + ", music: " + clock.getMusciURL() );
-		myAlert alert = new myAlert("setting alarm " + "vloume: " + clock.getVolume() + ", alarm id: " + clock.getId(), context);
-		alert.onCreateDialog();
-
-    pendingIntent = PendingIntent.getBroadcast(this.context, clock.getId(), alarmIntent, 0);
     calendar = Calendar.getInstance();
 
     String weekDay;
@@ -102,6 +94,24 @@ public class AlarmGoOffService {
 //      Log.w("asdf", "cancel errro" + e );
 //    }
 
+    alarmIntent = new Intent(this.context, AlarmReceiver.class);
+    alarmIntent.putExtra("musicUri", clock.getMusciURL());
+    alarmIntent.putExtra("volume", clock.getVolume());
+
+    boolean alarmUp = (PendingIntent.getBroadcast(this.context, clock.getId(),
+      alarmIntent,PendingIntent.FLAG_NO_CREATE) != null);
+
+    if (alarmUp)
+    {
+      Log.d("myTag", "Alarm is already active");
+    }
+
+    Log.w("!@3", "setting alarm " + "vloume: " + clock.getVolume() + ", music: " + clock.getMusciURL() );
+    myAlert alert = new myAlert("setting alarm " + "vloume: " + clock.getVolume() + ", alarm id: " + clock.getId(), context);
+    alert.onCreateDialog();
+
+    pendingIntent = PendingIntent.getBroadcast(this.context, clock.getId(), alarmIntent, 0);
+
 		Log.w("123", "setting alarm at " +  calendar.getTime());
 		manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
   }
@@ -122,6 +132,7 @@ public class AlarmGoOffService {
 
     try {
       manager.cancel(pendingIntent);
+      pendingIntent.cancel();
     } catch (Exception e) {
 			myAlert alert = new myAlert(e.toString(), context);
 			alert.onCreateDialog();

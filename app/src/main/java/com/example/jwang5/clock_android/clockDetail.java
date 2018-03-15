@@ -132,6 +132,9 @@ public class clockDetail extends AppCompatActivity {
 
 	public void saveClock(View v){
 
+    AlarmGoOffService alarmService = new AlarmGoOffService(this);
+
+
 		TextView tv = (TextView) findViewById(R.id.slectedTime);
 		this.time = tv.getText().toString();
 
@@ -155,6 +158,7 @@ public class clockDetail extends AppCompatActivity {
 			this.currentClock = new clock_bean(this.time, this.repeat, this.active, this.id, this.vibrateOn, this.musicUri, this.volume);
 			for(int i = 0; i < this.clockList.size(); i++){
 				if(this.clockList.get(i).getId() == this.id){
+          alarmService.cancelAlarm(this.clockList.get(i));
 					this.clockList.set(i, this.currentClock);
 					break;
 				}

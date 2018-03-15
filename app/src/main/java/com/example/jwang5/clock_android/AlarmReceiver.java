@@ -21,12 +21,12 @@ public class AlarmReceiver extends BroadcastReceiver {
 		Bundle extras = intent.getExtras();
 		String musicUri = extras.getString("musicUri");
 		int volume = extras.getInt("volume");
+    Log.w("123", "onReceive: volume" +  volume + ", musicUri: " + musicUri);
 
 		Intent in = new Intent(context, Home.class);
 		in.putExtra("fire", true);
 		in.putExtra("musicUri", musicUri);
 		in.putExtra("volume", volume);
-		Log.w("123", "onReceive: volume" +  volume);
 		context.startActivity(in);
 
 	}
