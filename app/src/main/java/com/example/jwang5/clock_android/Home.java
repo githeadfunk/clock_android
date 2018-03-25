@@ -27,12 +27,15 @@ public class Home extends AppCompatActivity {
 	private ArrayList<clock_bean> clockList;
 	private ListView listView;
 	private ClockListService cls = ClockListService.getInstance(this);
+	private MusicCtrl mc;
+	private boolean fired = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		Log.w("123", "home onCreate: ");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
+		this.fired = false;
 
 		final Window win= getWindow();
 		win.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
@@ -61,16 +64,15 @@ public class Home extends AppCompatActivity {
 				}
 			});
 		}
-		Boolean fired = false;
 		Bundle b = getIntent().getExtras();
 		if(b != null){
-			fired = b.getBoolean("fire");
+			this.fired = b.getBoolean("fire");
 			Log.w("fire", "fired" + fired );
 		}
 
 		if(fired == true){
-			MusicCtrl mc = MusicCtrl.getInstance(this);
-			mc.playMusic(this, b.getString("musicUri"), b.getInt("volume"));
+			this.mc = MusicCtrl.getInstance(this);
+			this.mc.playMusic(this, b.getString("musicUri"), b.getInt("volume"));
 		}
 
 		this.alarmGoesoff();
@@ -122,8 +124,32 @@ public class Home extends AppCompatActivity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		MusicCtrl mc = MusicCtrl.getInstance(this);
-		mc.stopMusic();
+//		MusicCtrl mc = MusicCtrl.getInstance(this);
+//		mc.stopMusic();
+    if (this.mc != null && this.mc.isPlaying()) {
+      mc.pause();
+    }
 	}
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    if (this.mc != null && this.mc.isPlaying()) {
+      this.mc.restart();
+    }
+  }
+
+  protected void onStart() {
+    super.onStart();
+    if (this.mc != null && this.mc.isPlaying()) {
+      this.mc.restart();
+    }
+  }
+  protected void onStop() {
+    super.onStop();
+    if (this.mc != null && this.mc.isPlaying()) {
+      mc.pause();
+    }
+  }
 
 }
