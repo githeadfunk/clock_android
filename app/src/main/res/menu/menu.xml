@@ -10,4 +10,9 @@
         android:icon="@drawable/delete"
         app:showAsAction="ifRoom"
         android:title="delete"/>
+    <item
+        android:id="@+id/list"
+        android:icon="@drawable/list_icon"
+        app:showAsAction="ifRoom"
+        android:title="PlayList"/>
 </menu>

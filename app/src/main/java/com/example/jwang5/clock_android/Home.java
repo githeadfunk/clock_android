@@ -99,6 +99,10 @@ public class Home extends AppCompatActivity {
 			case R.id.delete:
 				deleteAll();
 				return true;
+			case R.id.list:
+				Intent i = new Intent(this, PlaylistPool.class);
+				startActivity(i);
+				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}

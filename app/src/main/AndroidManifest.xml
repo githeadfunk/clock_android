@@ -18,6 +18,7 @@
         </activity>
 
         <activity android:name=".clockDetail" ></activity>
+        <activity android:name=".PlaylistPool" ></activity>
         <receiver android:name=".AlarmReceiver"></receiver>
         <receiver android:name=".DeviceBootReceiver"
             android:enabled="false">
